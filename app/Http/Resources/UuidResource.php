@@ -16,7 +16,7 @@ class UuidResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->uuid,
+            'value' => $this->uuid,
         ];
     }
 }
