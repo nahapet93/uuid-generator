@@ -15,7 +15,7 @@ class UuidController extends BaseController
     public function list(): JsonResponse
     {
         try {
-            $uuids = Uuid::all();
+            $uuids = Uuid::orderBy('id')->get();
             return $this->sendResponse(UuidResource::collection($uuids), 'UUIDs retrieved successfully.');
         } catch(\Throwable $e) {
             return $this->sendError($e->getMessage());
@@ -61,8 +61,9 @@ class UuidController extends BaseController
     public function delete(string $id): JsonResponse
     {
         try {
-            Uuid::where('id', $id)->delete();
-            return $this->sendResponse([], "UUID by ID {$id} deleted successfully.");
+            $uuid = Uuid::where('id', $id)->first();
+            $uuid->delete();
+            return $this->sendResponse(new UuidResource($uuid), "UUID by ID {$id} deleted successfully.");
         } catch(\Throwable $e) {
             return $this->sendError($e->getMessage());
         }
